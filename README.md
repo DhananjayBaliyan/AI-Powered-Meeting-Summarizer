@@ -1,158 +1,99 @@
-# Recall.ai - Meeting Transcription API
+AI-Powered Meeting Assistant 🎙️🤖
 
-If you’re looking for a transcription API for meetings, consider checking out [Recall.ai](https://www.recall.ai/?utm_source=github&utm_medium=sponsorship&utm_campaign=alexisbalayre-ai-powered-meeting-summarizer), an API that works with Zoom, Google Meet, Microsoft Teams, and more. Recall.ai diarizes by pulling the speaker data and separate audio streams from the meeting platforms, which means 100% accurate speaker diarization with actual speaker names.
+A local, privacy-first application that transcribes meetings, identifies speakers (diarization), and generates structured summaries using advanced AI models.
 
-# AI-Powered Meeting Summarizer
+This project runs entirely offline on your machine, ensuring sensitive meeting data never leaves your infrastructure.
 
-## Overview
+🚀 Features
 
-The **AI-Powered Meeting Summarizer** is a Gradio-powered application that converts audio recordings of meetings into transcripts and provides concise summaries using `whisper.cpp` for audio-to-text conversion and `Ollama` for text summarization. This tool is ideal for quickly extracting key points, decisions, and action items from meetings.
+Speaker Diarization: Accurately identifies "Who said what" using NVIDIA NeMo and Pyannote.
 
-<img width="1512" alt="Screenshot 2024-10-01 at 10 05 32 PM" src="https://github.com/user-attachments/assets/5b93cfed-c853-4ebb-8d90-bbda58354192">
+High-Accuracy Transcription: Uses OpenAI Whisper models for state-of-the-art speech-to-text.
+
+Smart Summarization: Integrates with a local Ollama (Llama 3.2) server to generate action items, key decisions, and meeting minutes.
+
+Privacy First: 100% local execution. No cloud APIs, no data egress.
+
+Cross-Platform Support: Optimized for WSL (Windows Subsystem for Linux) environments.
+
+User-Friendly Interface: Built with Gradio for easy drag-and-drop functionality.
+
+🛠️ Tech Stack
+
+Core Logic: Python 3.10+
+
+UI Framework: Gradio
+
+ASR Engine: OpenAI Whisper
+
+Diarization: NVIDIA NeMo / Pyannote Audio
+
+LLM Backend: Ollama (Llama 3.2)
+
+Audio Processing: FFmpeg, Torchaudio
+
+📋 Prerequisites
+
+Before running the project, ensure you have the following installed:
+
+WSL 2 (Windows Subsystem for Linux) (if on Windows)
+
+Python 3.10 or higher
+
+FFmpeg (sudo apt install ffmpeg)
+
+Ollama running locally with the llama3.2 model pulled (ollama pull llama3.2)
+
+⚡ Installation
+
+Clone the repository:
+
+git clone [https://github.com/YOUR_USERNAME/AI-Powered-Meeting-Assistant.git](https://github.com/YOUR_USERNAME/AI-Powered-Meeting-Assistant.git)
+cd AI-Powered-Meeting-Assistant
 
 
-https://github.com/user-attachments/assets/2f1de19d-0feb-4a35-a6ab-f9be8dabf512
+Set up the environment:
 
-
-
-
-## Features
-
-- **Audio-to-Text Conversion**: Uses `whisper.cpp` to convert audio files into text.
-- **Text Summarization**: Uses models from the `Ollama` server to summarize the transcript.
-- **Multiple Models Support**: Supports different Whisper models (`base`, `small`, `medium`, `large-V3`) and any available model from the Ollama server.
-- **Translation**: Allows translation of non-English audio to English using Whisper.
-- **Gradio Interface**: Provides a user-friendly web interface to upload audio files, view summaries, and download transcripts.
-
-## Requirements
-
-- Python 3.x
-- [FFmpeg](https://www.ffmpeg.org/) (for audio processing)
-- [Whisper.cpp](https://github.com/ggerganov/whisper.cpp) (for audio-to-text conversion)
-- [Ollama server](https://ollama.com/) (for text summarization)
-- [Gradio](https://www.gradio.app/) (for the web interface)
-- [Requests](https://requests.readthedocs.io/en/latest/) (for handling API calls to the Ollama server)
-
-## Pre-Installation
-
-Before running the application, ensure you have Ollama that is running on your local machine or a server. You can follow the instructions provided in the [Ollama repository](https://github.com/ollama/ollama) to set up the server. Do not forget to download and run a model from the Ollama server.
-
-```bash
-# To install and run Llama 3.2
-ollama run llama3.2
-```
-
-## Installation
-
-Follow the steps below to set up and run the application:
-
-### Step 1: Clone the Repository
-
-```bash
-git clone https://github.com/AlexisBalayre/AI-Powered-Meeting-Summarizer
-cd AI-Powered-Meeting-Summarizer
-```
-
-### Step 2: Run the Setup Script
-
-To install all necessary dependencies (including Python virtual environment, `whisper.cpp`, FFmpeg, and Python packages), and to run the application, execute the provided setup script:
-
-```bash
-chmod +x run_meeting_summarizer.sh
-./run_meeting_summarizer.sh
-```
-
-This script will:
-
-- Create and activate a Python virtual environment.
-- Install necessary Python packages like `requests` and `gradio`.
-- Check if `FFmpeg` is installed and install it if missing.
-- Clone and build `whisper.cpp`.
-- Download the required Whisper model (default: `small`).
-- **Run the `main.py` script**, which will start the Gradio interface for the application.
-
-### Step 3: Accessing the Application
-
-Once the setup and execution are complete, Gradio will provide a URL (typically `http://127.0.0.1:7860`). Open this URL in your web browser to access the Meeting Summarizer interface.
-
-Alternatively, after setup, you can activate the virtual environment and run the Python script manually:
-
-```bash
-# Activate the virtual environment
+python3 -m venv .venv
 source .venv/bin/activate
 
-# Run the main.py script
-python main.py
-```
 
-## Usage
+Install dependencies:
+Note: This installs PyTorch and NeMo, which may take a few minutes.
 
-### Uploading an Audio File
+pip install -r requirements.txt
+pip install -c whisper-diarization/constraints.txt -r whisper-diarization/requirements.txt
 
-1. **Upload an Audio File**: Click on the audio upload area and select an audio file in any supported format (e.g., `.wav`, `.mp3`).
-2. **Provide Context (Optional)**: You can provide additional context for better summarization (e.g., "Meeting about AI and Ethics").
-3. **Select Whisper Model**: Choose one of the available Whisper models (`base`, `small`, `medium`, `large-V3`) for audio-to-text conversion.
-4. **Select Summarization Model**: Choose a model from the available options retrieved from the `Ollama` server.
 
-### Viewing Results
+🏃‍♂️ Usage
 
-- After uploading an audio file, you will get a **Summary** of the transcript generated by the selected models.
-- You can also **download the full transcript** as a text file by clicking the provided link.
+The Easy Way (Startup Script)
 
-## Customization
+We have included a script that automatically starts the Ollama server and the application.
 
-### Changing the Whisper Model
+./run_all.sh
 
-By default, the Whisper model used is `small`. You can modify this in the `run_meeting_summarizer.sh` script by changing the `WHISPER_MODEL` variable:
 
-```bash
-WHISPER_MODEL="medium"
-```
+The Manual Way
 
-Alternatively, you can select different Whisper models from the dropdown in the Gradio interface. The list of available models is dynamically generated based on the `.bin` files found in the `whisper.cpp/models` directory.
+Start your Ollama server: ollama serve
 
-### Downloading Additional Whisper Models
+Activate environment: source .venv/bin/activate
 
-To download a different Whisper model (e.g., `base`, `medium`, `large`), use the following steps:
+Run the app: python main.py
 
-1. Navigate to the `whisper.cpp` directory:
+Once running, open your browser to https://www.google.com/search?q=http://127.0.0.1:7860.
 
-   ```bash
-   cd whisper.cpp
-   ```
+📁 Project Structure
 
-2. Use the provided script to download the desired model. For example, to download the `base` model, run:
+main.py: The core application logic and Gradio interface.
 
-   ```bash
-   ./models/download-ggml-model.sh base
-   ```
+whisper-diarization/: The submodule handling speaker identification.
 
-   For the `large` model, you can run:
+run_all.sh: Startup script for easy launching.
 
-   ```bash
-   ./models/download-ggml-model.sh large
-   ```
+requirements.txt: Python dependencies.
 
-   This will download the `.bin` file into the `whisper.cpp/models` directory.
+🤝 Contributing
 
-3. Once downloaded, the new model will automatically be available in the model dropdown when you restart the application.
-
-### Configuring Translation
-
-By default, Whisper will detect the language of the audio file and translate it to English if necessary. This behavior is controlled by the `-l` flag in the `whisper.cpp` command.
-
-```bash
-./whisper.cpp/main -m ./whisper.cpp/models/ggml-{WHISPER_MODEL}.bin -l fr -f "{audio_file_wav}"
-```
-
-This flag tells Whisper to translate the audio into French regardless of the original language.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
-## Acknowledgements
-
-- **whisper.cpp** by Georgi Gerganov for the audio-to-text conversion.
-- **Gradio** for the interactive web interface framework.
-- **Ollama** for providing large language models for summarization.
+Contributions are welcome! Please feel free to submit a Pull Request.
