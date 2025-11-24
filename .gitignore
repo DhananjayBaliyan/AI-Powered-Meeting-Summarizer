@@ -2,9 +2,10 @@ __pycache__/
 *.pyc
 .venv/
 .env
-whisper.cpp/
-whisper-diarization/
 *.bin
+*.pt
+*.pth
+*.onnx
 *.mp3
 *.wav
 *.txt
