@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+whisper.cpp/
+whisper-diarization/
+*.bin
+*.mp3
+*.wav
+*.txt
+*.srt
+output.txt
+temp_outputs*/
