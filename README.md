@@ -1,7 +1,7 @@
 AI-Powered Meeting Assistant (Speaker-Aware, Fully Local)
 
 
-Image1.png
+![Ai-Powered-Meeting-Summarizer Screenshot](Image1.png)
 
 A privacy-first, fully local AI meeting assistant that transcribes audio, identifies individual speakers, and generates structured meeting summaries — all running 100% offline on your own hardware using WSL + Python + Local LLMs.
 
